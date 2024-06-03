@@ -1,4 +1,4 @@
-package dk.wavebleak.classes;
+package dk.wavebleak.commandhelpers;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ public abstract class PlayerCommand extends Command{
     @Override
     public void execute(CommandSender sender, String[] args) {}
 
-    abstract void execute(Player player, String[] args);
+    public abstract void execute(Player player, String[] args);
 
 
 }

@@ -1,8 +1,6 @@
-package dk.wavebleak.classes;
+package dk.wavebleak.commandhelpers;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -11,11 +9,15 @@ import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public abstract class SubCommand {
 
     protected String name;
     protected List<SubCommand> subCommands = new ArrayList<>();
+
+    public SubCommand(String name) {
+        this.name = name;
+    }
+
     protected SubCommand addSubCommand(SubCommand subCommand) {
         subCommands.add(subCommand);
         return this;
@@ -31,6 +33,6 @@ public abstract class SubCommand {
         }
     }
 
-    abstract void execute(String[] args);
+    public abstract void execute(String[] args);
 
 }

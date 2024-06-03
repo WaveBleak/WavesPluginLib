@@ -1,4 +1,4 @@
-package dk.wavebleak.classes;
+package dk.wavebleak.commandhelpers;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +23,7 @@ public abstract class Command implements CommandExecutor {
         }
     }
 
-    protected Command addSubCommand(SubCommand subCommand) {
+    public Command addSubCommand(SubCommand subCommand) {
         subCommands.add(subCommand);
         return this;
     }
@@ -46,5 +46,5 @@ public abstract class Command implements CommandExecutor {
     }
 
 
-    abstract void execute(CommandSender sender, String[] args);
+    public abstract void execute(CommandSender sender, String[] args);
 }

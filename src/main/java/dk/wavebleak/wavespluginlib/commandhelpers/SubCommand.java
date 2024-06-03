@@ -1,4 +1,4 @@
-package dk.wavebleak.commandhelpers;
+package dk.wavebleak.wavespluginlib.commandhelpers;
 
 import lombok.Getter;
 import lombok.Setter;

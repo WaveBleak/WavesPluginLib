@@ -1,4 +1,4 @@
-package dk.wavebleak.commandhelpers;
+package dk.wavebleak.wavespluginlib.commandhelpers;
 
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

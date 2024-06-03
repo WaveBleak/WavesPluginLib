@@ -1,4 +1,4 @@
-package dk.wavebleak;
+package dk.wavebleak.wavespluginlib;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

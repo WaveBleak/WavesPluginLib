@@ -23,6 +23,7 @@ public abstract class Command implements CommandExecutor {
         }
     }
 
+    @SuppressWarnings("unused")
     public Command addSubCommand(SubCommand subCommand) {
         subCommands.add(subCommand);
         return this;

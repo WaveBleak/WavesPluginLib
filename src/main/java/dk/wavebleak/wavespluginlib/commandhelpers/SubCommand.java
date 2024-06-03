@@ -18,11 +18,13 @@ public abstract class SubCommand {
         this.name = name;
     }
 
+    @SuppressWarnings("unused")
     protected SubCommand addSubCommand(SubCommand subCommand) {
         subCommands.add(subCommand);
         return this;
     }
 
+    @SuppressWarnings("unused")
     public void callSubCommands(String[] args) {
         if(args.length == 0) return;
         for(SubCommand subCommand : subCommands) {

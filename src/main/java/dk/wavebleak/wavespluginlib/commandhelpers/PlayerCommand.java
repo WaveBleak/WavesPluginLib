@@ -4,7 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings("unused")
 public abstract class PlayerCommand extends Command{
+    @SuppressWarnings("unused")
     public PlayerCommand(JavaPlugin instance, String commandName) {
         super(instance, commandName);
     }

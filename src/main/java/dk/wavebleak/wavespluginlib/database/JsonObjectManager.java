@@ -4,7 +4,6 @@ package dk.wavebleak.wavespluginlib.database;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import dk.wavebleak.wavespluginlib.WavesPluginLib;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -19,16 +18,18 @@ public class JsonObjectManager<T> {
     private File dataFile;
     private JsonArray dataArray;
     private Gson gson;
-    private final JavaPlugin instance;
+    private JavaPlugin instance;
     private final Class<T> type;
     public JsonObjectManager(Class<T> type) {
-        this.instance = WavesPluginLib.pluginInstance;
-        if(!instance.getDataFolder().exists()) instance.getDataFolder().mkdir();
         dataFile = null;
         gson = null;
         this.type = type;
     }
 
+    public JsonObjectManager setInstance(JavaPlugin instance) {
+        this.instance = instance;
+        return this;
+    }
     public JsonObjectManager setGson(Gson gson) {
         this.gson = gson;
         return this;
@@ -38,8 +39,10 @@ public class JsonObjectManager<T> {
         return this;
     }
     public void init() throws JsonManagerException {
+        if(instance == null) throw new JsonManagerException("Instance is null");
         if(gson == null) throw new JsonManagerException("Gson is null");
         if(dataFile == null) throw new JsonManagerException("Datafile is null");
+        if(!instance.getDataFolder().exists()) instance.getDataFolder().mkdir();
         if(!dataFile.exists()) {
             createDataFile();
         }

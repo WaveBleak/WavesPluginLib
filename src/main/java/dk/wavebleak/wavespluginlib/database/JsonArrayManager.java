@@ -3,7 +3,6 @@ package dk.wavebleak.wavespluginlib.database;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import dk.wavebleak.wavespluginlib.WavesPluginLib;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -12,24 +11,24 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("all")
 public class JsonArrayManager<T> {
-    private File dataFile;
+    private File dataFile = null;
     private JsonArray dataArray;
-    private Gson gson;
-    private final JavaPlugin instance;
+    private Gson gson = null;
+    private JavaPlugin instance = null;
     private final Class<T> type;
-    private final T example;
-    public JsonArrayManager(Class<T> type, T example) {
-        this.instance = WavesPluginLib.pluginInstance;
-        if(!instance.getDataFolder().exists()) instance.getDataFolder().mkdir();
+    public JsonArrayManager(Class<T> type) {
         dataFile = null;
         gson = null;
         this.type = type;
-        this.example = example;
+    }
+
+    public JsonArrayManager setInstance(JavaPlugin instance) {
+        this.instance = instance;
+        return this;
     }
 
     public JsonArrayManager setGson(Gson gson) {
@@ -41,18 +40,24 @@ public class JsonArrayManager<T> {
         return this;
     }
     public void init() throws JsonManagerException {
+        if(instance == null) throw new JsonManagerException("Instance is null");
         if(gson == null) throw new JsonManagerException("Gson is null");
         if(dataFile == null) throw new JsonManagerException("Datafile is null");
+        if(!instance.getDataFolder().exists()) instance.getDataFolder().mkdir();
         if(!dataFile.exists()) {
             createDataFile();
         }
+        dataArray = loadJsonFromFile(dataFile);
     }
 
     private void createDataFile() {
         try {
             if(dataFile.createNewFile()) {
-                List<T> data = new ArrayList<>(Collections.singletonList(example));
-                saveData(data);
+                try(FileWriter writer = new FileWriter(dataFile)) {
+                    writer.write("[]");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }catch (IOException ex) {
             ex.printStackTrace();
@@ -68,7 +73,10 @@ public class JsonArrayManager<T> {
     public synchronized List<T> loadData() {
         Type type = new TypeToken<List<T>>() {}.getType();
 
-        return gson.fromJson(dataArray, type);
+        List<T> list = gson.fromJson(dataArray, type);
+
+        if(list == null) return new ArrayList<>();
+        return list;
     }
 
     public synchronized void saveData(List<T> data) {

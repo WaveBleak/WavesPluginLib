@@ -14,8 +14,8 @@ public class WavesPluginLib {
     public static JavaPlugin pluginInstance;
     public static HashMap<Player, InventoryData> inventoryManager = new HashMap<>();
     public static HashMap<Player, CloseInventoryData> closeInventoryManager = new HashMap<>();
-    @SuppressWarnings({"todo", "unused"})
-    public WavesPluginLib(JavaPlugin plugin) {
+    @SuppressWarnings("unused")
+    public static void init(JavaPlugin plugin) {
         pluginInstance = plugin;
         Bukkit.getPluginManager().registerEvents(new GUIChangeListener(), pluginInstance);
     }

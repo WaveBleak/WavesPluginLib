@@ -15,7 +15,7 @@ public abstract class PlayerCommand extends Command{
     public boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
         if(!(commandSender instanceof Player)) return false;
         execute((Player) commandSender, strings);
-        callSubCommands(strings);
+        callSubCommands(commandSender, strings);
         return true;
     }
 

@@ -11,12 +11,14 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
 import java.util.concurrent.Executor;
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class WavesPluginLib {
     public static JavaPlugin pluginInstance;
     public static HashMap<Player, InventoryData> inventoryManager = new HashMap<>();
     public static HashMap<Player, CloseInventoryData> closeInventoryManager = new HashMap<>();
+    public static HashMap<String, Consumer<String>> inputBoxSessions = new HashMap<>();
     public static Executor mainThreadExecutor;
     @SuppressWarnings("unused")
     public static void init(JavaPlugin plugin) {

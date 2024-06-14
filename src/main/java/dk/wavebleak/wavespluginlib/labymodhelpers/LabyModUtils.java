@@ -66,7 +66,7 @@ public class LabyModUtils {
         LabyModProtocol.sendLabyModMessage(receiver, "emote_api", array);
     }
 
-    public void sendCurrentPlayingGamemode(Player player, boolean visible, String gamemodeName ) {
+    public static void sendCurrentPlayingGamemode(Player player, boolean visible, String gamemodeName ) {
         JsonObject object = new JsonObject();
         object.addProperty( "show_gamemode", visible );
         object.addProperty( "gamemode_name", gamemodeName );
@@ -75,16 +75,29 @@ public class LabyModUtils {
         LabyModProtocol.sendLabyModMessage( player, "server_gamemode", object );
     }
 
-    public void sendInputPrompt(Player player, int promptSessionId, String message, int maxLength ) {
+    public static void sendInputPrompt(Player player, int promptSessionId, String title, String placeholder, String value, int maxLength ) {
         JsonObject object = new JsonObject();
         object.addProperty( "id", promptSessionId );
-        object.addProperty( "message", message );
+        object.addProperty( "message", title );
         object.addProperty( "max_length", maxLength );
+
+        String finalValue = "";
+        if(!(value == null || value.isEmpty())) {
+            finalValue = value;
+        }
+        object.addProperty("value", finalValue);
+
+        String finalPlaceholder = "";
+        if(!(placeholder == null || placeholder.isEmpty())) {
+            finalPlaceholder = placeholder;
+        }
+        object.addProperty("placeholder", finalPlaceholder);
+
+        LabyModProtocol.sendLabyModMessage( player, "input_prompt", object );
 
         // If you want to use the new text format in 1.16+
         // object.add("raw_json_text", textObject );
 
-        LabyModProtocol.sendLabyModMessage( player, "input_prompt", object );
     }
 
 

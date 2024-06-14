@@ -2,11 +2,14 @@ package dk.wavebleak.wavespluginlib.labymodhelpers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import dk.wavebleak.wavespluginlib.WavesPluginLib;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+
+import java.util.function.Consumer;
 
 public class LabyListener implements PluginMessageListener {
     @Override
@@ -28,5 +31,10 @@ public class LabyListener implements PluginMessageListener {
         InputBoxResponseEvent event = new InputBoxResponseEvent(player, id, value);
 
         Bukkit.getPluginManager().callEvent(event);
+        if(WavesPluginLib.inputBoxSessions.containsKey(id)) {
+            Consumer<String> consumer = WavesPluginLib.inputBoxSessions.get(id);
+            if(consumer == null) return;
+            consumer.accept(value);
+        }
     }
 }

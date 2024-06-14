@@ -5,10 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +17,12 @@ public class JsonArrayManager<T> {
     private Gson gson = null;
     private JavaPlugin instance = null;
     private final Class<T> type;
+    private final Type typeToken;
     public JsonArrayManager(Class<T> type) {
         dataFile = null;
         gson = null;
         this.type = type;
+        this.typeToken = new TypeToken<List<T>>() {}.getType();
     }
 
     public JsonArrayManager setInstance(JavaPlugin instance) {
@@ -64,19 +63,21 @@ public class JsonArrayManager<T> {
         }
     }
 
-    public synchronized List<T> refreshData() {
+    public synchronized List<T> refreshData(Type type) {
         dataArray = loadJsonFromFile(dataFile);
 
-        return loadData();
+        return loadData(type);
     }
 
-    public synchronized List<T> loadData() {
-        Type type = new TypeToken<List<T>>() {}.getType();
-
-        List<T> list = gson.fromJson(dataArray, type);
-
-        if(list == null) return new ArrayList<>();
-        return list;
+    public synchronized List<T> loadData(Type type) {
+        try (Reader reader = new FileReader(dataFile)) {
+            List<T> list = gson.fromJson(reader, type);
+            if(list == null) return new ArrayList<>();
+            return list;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     public synchronized void saveData(List<T> data) {

@@ -31,22 +31,22 @@ public abstract class Command implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, org.bukkit.command.Command command, String s, String[] strings) {
-        callSubCommands(commandSender, strings);
-        execute(commandSender, strings);
+        if(!callSubCommands(commandSender, strings)) execute(commandSender, strings);
         return true;
     }
 
-    @SuppressWarnings("unused")
-    public void callSubCommands(CommandSender sender, String[] args) {
-        if(args.length == 0) return;
+    @SuppressWarnings("all")
+    public boolean callSubCommands(CommandSender sender, String[] args) {
+        if(args.length == 0) return false;
         for(SubCommand subCommand : subCommands) {
             for(String name : subCommand.names) {
                 if (name.equalsIgnoreCase(args[0])) {
                     subCommand.execute(sender, Arrays.copyOfRange(args, 1, args.length));
-                    return;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
 

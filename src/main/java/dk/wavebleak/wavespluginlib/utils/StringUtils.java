@@ -21,6 +21,14 @@ public class StringUtils {
         return seconds + " sekund" + (seconds > 1 ? "er" : "");
     }
 
+    public static String line(int amount) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(ChatColor.DARK_GRAY).append(ChatColor.STRIKETHROUGH);
+        for (int i = 0; i < amount; i++)
+            builder.append(" ");
+        return builder.toString();
+    }
+
     public static String progressBar(char progressChar, ChatColor color1, ChatColor color2, float percentComplete, int totalChars) {
         StringBuilder progressBar = new StringBuilder();
 

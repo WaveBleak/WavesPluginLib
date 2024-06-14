@@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import dk.wavebleak.wavespluginlib.WavesPluginLib;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -16,10 +17,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -30,6 +28,7 @@ public class ItemBuilder {
     private int amount = 1;
     private byte data = -1;
     private List<String> lore = new ArrayList<>();
+    private final HashMap<Enchantment, Integer> enchants = new HashMap<>();
     private ItemMeta meta = null;
     private String name = null;
 
@@ -51,8 +50,15 @@ public class ItemBuilder {
         if (name != null) {
             itemMeta.setDisplayName(name);
         }
+
         itemMeta.setLore(lore);
         itemStack.setItemMeta(itemMeta);
+
+
+        for(Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
+            itemStack.addEnchantment(enchant.getKey(), enchant.getValue());
+        }
+
         return itemStack;
     }
 
@@ -138,6 +144,10 @@ public class ItemBuilder {
         return null;
     }
 
+    public ItemBuilder addEnchant(Enchantment enchantment, int level) {
+        enchants.put(enchantment, level);
+        return this;
+    }
 
     public ItemBuilder setName(String name) {
         this.name = ChatColor.translateAlternateColorCodes('&', name);

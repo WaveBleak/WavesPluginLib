@@ -26,7 +26,7 @@ public class ItemBuilder {
 
     private Material material = Material.STONE;
     private int amount = 1;
-    private byte data = -1;
+    private Byte data = null;
     private List<String> lore = new ArrayList<>();
     private final HashMap<Enchantment, Integer> enchants = new HashMap<>();
     private ItemMeta meta = null;
@@ -34,7 +34,7 @@ public class ItemBuilder {
 
     public ItemStack build() {
         ItemStack itemStack;
-        if(data != -1) {
+        if(data != null) {
             itemStack = new ItemStack(material, amount, data);
         } else {
             itemStack = new ItemStack(material, amount);
@@ -60,6 +60,20 @@ public class ItemBuilder {
         }
 
         return itemStack;
+    }
+
+    @SuppressWarnings("deprecation")
+    public ItemBuilder fromExistingItem(ItemStack item) {
+        ItemMeta itemMeta = item.getItemMeta();
+
+        material = item.getType();
+        amount = item.getAmount();
+        data = item.getData().getData();
+        lore = itemMeta.getLore();
+        meta = itemMeta;
+        name = itemMeta.getDisplayName();
+
+        return this;
     }
 
     public ItemBuilder fromTexture(String texture) {

@@ -7,6 +7,7 @@ import dk.wavebleak.wavespluginlib.labymodhelpers.LabyListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.HashMap;
@@ -31,6 +32,19 @@ public class WavesPluginLib {
 
         Bukkit.getPluginManager().registerEvents(new GUIChangeListener(), pluginInstance);
 
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if(inventoryManager.containsKey(player)) {
+                        if(!player.getOpenInventory().getTopInventory().equals(inventoryManager.get(player).getInventory())) {
+                            inventoryManager.remove(player);
+                            closeInventoryManager.remove(player);
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 20, 20);
     }
 
 

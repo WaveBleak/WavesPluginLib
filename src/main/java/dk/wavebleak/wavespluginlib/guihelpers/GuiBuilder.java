@@ -6,6 +6,7 @@ import dk.wavebleak.wavespluginlib.inventoryutils.CloseInventoryManager;
 import dk.wavebleak.wavespluginlib.inventoryutils.InventoryData;
 import dk.wavebleak.wavespluginlib.inventoryutils.InventoryManager;
 import dk.wavebleak.wavespluginlib.itemhelpers.ItemBuilder;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,6 +26,8 @@ public class GuiBuilder {
     private final HashMap<Player, InventoryManager> whenClicked = new HashMap<>();
     private final HashMap<Player, CloseInventoryManager> whenClosed = new HashMap<>();
     private String name = null;
+
+
     private int rows = 3;
     private boolean setRows = false;
     private ItemStack rowItem;
@@ -71,20 +74,20 @@ public class GuiBuilder {
         return this;
     }
 
+    public GuiBuilder setRows(int rows) {
+        this.rows = rows;
+        return this;
+    }
+
     public GuiBuilder fillBorders(ItemStack item, GUIBorderType borderType) {
         this.setRows = true;
-        this.rowItem = item;
+        this.rowItem = (item == null ? getDefaultBorderItem() : item);
         this.borderType = borderType;
         return this;
     }
 
     public GuiBuilder addItem(Integer slot, ItemStack item) {
         slotsToFill.put(slot, item);
-        return this;
-    }
-
-    public GuiBuilder setRows(int rows) {
-        this.rows = rows;
         return this;
     }
 
@@ -113,7 +116,7 @@ public class GuiBuilder {
         if(name == null) {
             inventory = Bukkit.createInventory(null, rows * 9);
         }else {
-            inventory = Bukkit.createInventory(null, rows * 9, name);
+            inventory = Bukkit.createInventory(null, rows * 9, ChatColor.translateAlternateColorCodes('&', name));
         }
 
         if(setRows) {

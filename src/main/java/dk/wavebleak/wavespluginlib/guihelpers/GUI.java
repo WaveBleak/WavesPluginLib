@@ -58,10 +58,6 @@ public abstract class GUI{
         return col + (row * 9);
     }
 
-    protected void setRows(ItemStack item) {
-        this.setRows = true;
-        this.rowItem = item;
-    }
 
     public GUI() {
         init();
@@ -81,7 +77,7 @@ public abstract class GUI{
 
     protected void fillBorders(ItemStack item, GUIBorderType borderType) {
         this.setRows = true;
-        this.rowItem = item;
+        this.rowItem = (item == null ? getDefaultBorderItem() : item);
         this.borderType = borderType;
     }
 

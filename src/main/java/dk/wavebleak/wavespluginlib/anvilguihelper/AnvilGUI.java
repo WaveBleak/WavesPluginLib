@@ -170,7 +170,6 @@ public class AnvilGUI {
                     // A click handler is running, don't launch another one
                     return;
                 }
-
                 final CompletableFuture<List<ResponseAction>> actionsFuture =
                         clickHandler.apply(rawSlot, StateSnapshot.fromAnvilGUI(AnvilGUI.this));
 
@@ -179,6 +178,10 @@ public class AnvilGUI {
                         action.accept(AnvilGUI.this, clicker);
                     }
                 };
+
+                if(actionsFuture == null) {
+                    return;
+                }
 
                 if (actionsFuture.isDone()) {
                     // Fast-path without scheduling if clickHandler is performed in sync

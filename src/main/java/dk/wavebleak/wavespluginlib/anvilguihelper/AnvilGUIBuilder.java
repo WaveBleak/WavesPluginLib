@@ -24,7 +24,7 @@ public class AnvilGUIBuilder {
 
     private Consumer<AnvilGUI.StateSnapshot> closeListener;
 
-    private AnvilGUI.ClickHandler clickHandler;
+    private AnvilGUI.ClickHandler clickHandler = null;
 
     private boolean preventClose = false;
 
@@ -105,6 +105,15 @@ public class AnvilGUIBuilder {
                     .fromExistingItem(itemLeft)
                     .setName(itemText)
                     .build();
+        }
+
+        if(clickHandler == null) {
+            clickHandler = new AnvilGUI.ClickHandler() {
+                @Override
+                public CompletableFuture<List<AnvilGUI.ResponseAction>> apply(Integer integer, AnvilGUI.StateSnapshot stateSnapshot) {
+                    return null;
+                }
+            };
         }
 
         final AnvilGUI anvilGUI = new AnvilGUI(

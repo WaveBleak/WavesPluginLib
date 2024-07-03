@@ -100,6 +100,19 @@ public class LabyModUtils {
 
     }
 
+    public static void sendBuggedInputPrompt(Player player) {
+        JsonObject object = new JsonObject();
+        object.addProperty( "id", 234 );
+        object.addProperty( "message", "HEJ" );
+        object.addProperty( "max_length", 50 );
+
+        LabyModProtocol.sendLabyModMessage( player, "input_prompt", object );
+
+        // If you want to use the new text format in 1.16+
+        // object.add("raw_json_text", textObject );
+
+    }
+
 
 
 

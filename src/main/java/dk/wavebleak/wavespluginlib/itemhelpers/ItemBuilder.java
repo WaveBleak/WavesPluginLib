@@ -7,6 +7,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import dk.wavebleak.wavespluginlib.WavesPluginLib;
 import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,25 +43,29 @@ public class ItemBuilder {
 
         ItemMeta itemMeta;
         if(meta == null) {
-            itemMeta = itemStack.getItemMeta();
+            itemMeta = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         } else {
             itemMeta = meta;
         }
+
 
         if (name != null) {
             itemMeta.setDisplayName(name);
         }
 
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
+        if(!itemStack.getType().equals(Material.AIR)) {
+            itemMeta.setLore(lore);
 
+            for(Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                itemMeta.addEnchant(entry.getKey(), entry.getValue(), true);
+            }
 
-        for(Map.Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
-            itemStack.addEnchantment(enchant.getKey(), enchant.getValue());
+            itemStack.setItemMeta(itemMeta);
         }
 
         return itemStack;
     }
+
 
     @SuppressWarnings("deprecation")
     public ItemBuilder fromExistingItem(ItemStack item) {
